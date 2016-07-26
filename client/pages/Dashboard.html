@@ -1,0 +1,275 @@
+<template name="Dashboard">
+  {{#if isInRole 'admin'}}
+<div class="row">
+  <div class="col-sm-12 col-md-6 clearfix">
+    <h1 class="page-title">Dashboard</h1>
+    <h3>Instructions: Add your budget and expenses</h3>
+    <a href="#" id="add"><button>Add Event</button></a>
+
+</div>
+  <div class="col-sm-12 col-md-6 clearfix">
+    <h2 id="balance">Current Balance</h2>
+    {{> snapshot}}
+  </div><br><br>
+    {{> eventsDates}}
+    <br>
+    {{> eventsTable}}
+
+    {{> addEventModalTemplate}}
+</div>
+  {{else}}
+    <h1>Not Authorized</h1>
+  {{/if}}
+</template>
+
+
+<template name="addEventModalTemplate">
+    <div class="modal fade" id="addEventModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">x</a>
+                    <h3 class="modal-title">Add Event</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" id="add-event-form">
+                        <input type="hidden" name="_id"/>
+
+                        <div class="form-group">
+                            <label for="name" class="col-sm-3">Name</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="name" id="name" class="form-control" placeholder="Description for your type of income/expense" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="type" class="col-sm-3">Type</label>
+                            <div class="col-sm-9">
+                                <select name="type" id="type" class="form-control">
+                                    <option value="Fixed expense or bill">Fixed Expense / Bill Due</option>
+                                    <option value="Income">Income</option>
+                                    <option value="Variable">Variable Cost</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="category" class="col-sm-3">Category</label>
+                            <div class="col-sm-9">
+                                <select name="category" id="category" class="form-control">
+                                    <option>Salary</option>
+                                    <option>Credit Card</option>
+                                    <option>Loan</option>
+                                    <option>Utilities</option>
+                                    <option>Housing - Rent/Mortgage</option>
+                                    <option>Child Care</option>
+                                    <option>Insurance</option>
+                                    <option>Medical</option>
+                                    <option>Transportation</option>
+                                    <option>Groceries</option>
+                                    <option>Clothing</option>
+                                    <option>Dining Out</option>
+                                    <option>Education</option>
+                                    <option>Entertainment</option>
+                                    <option>Gifts</option>
+                                    <option>Personal</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="amount" class="col-sm-3">Amount</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="amount" id="amount" class="form-control" placeholder="Enter numbers" />
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3">Savings</label>
+                            <div class="col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="is_savings" value="1" />
+                                        Savings
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3">Debt</label>
+                            <div class="col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="is_debt" value="1" />
+                                        Debt/Expense
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="date" class="col-sm-3">Date</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="date" id="date" placeholder="Format: YYYY-MM-DD" class="datepicker form-control"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3">Recurring Event?</label>
+                            <div class="col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="recurring" />
+                                        Yes - Even Intervals
+                                    </label>
+                                </div>
+                                <div id="recurring_fields" class="form-inline col-sm-offset-2">
+                                    <br />
+                                    <div class="form-group">
+                                        <label>Every</label>
+
+                                        <select name="recurringCount" disabled="disabled" class="input-small form-control">
+                                            <option>1</option>
+                                            <option>2</option>
+                                            <option>3</option>
+                                            <option>4</option>
+                                        </select>
+
+                                        <select name="recurringInterval" disabled="disabled" class="input-small form-control">
+                                            <option value="">- None -</option>
+                                            <option value="days">Days</option>
+                                            <option value="weeks">Weeks</option>
+                                            <option value="months">Months</option>
+                                            <option value="years">Years</option>
+                                        </select>
+                                    </div>
+                                    <br />
+                                    <div class="form-group">
+
+                                    </div>
+                                </div>
+
+                                <hr />
+
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" id="recurring_irregular" />
+                                        Yes - Irregular
+                                    </label>
+                                </div>
+                                <div id="recurring_fields_irregular" class="form-inline col-sm-offset-2">
+                                    <br />
+                                    <div class="form-group">
+                                        <select name="recurringOrdinal" disabled="disabled" class="input-small form-control">
+                                            <option>First</option>
+                                            <option>Last</option>
+                                        </select>
+                                        <select name="recurringDay" disabled="disabled" class="input-small form-control">
+                                            <option>Day</option>
+                                            <option>Weekday</option>
+                                        </select>
+                                        of the month
+                                    </div>
+                                </div>
+
+                                <hr />
+
+                                <div class="until_date">
+                                    <div class="form-group">
+                                        <label class="col-sm-3">Until</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="datepicker form-control" id="recurringUntil" name="recurringUntil" disabled="disabled" placeholder="Format: YYYY-MM-DD" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>&nbsp;</label>
+                            <input type="submit" class="btn btn-success btn-lg btn-block save-event" value="Save"/>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template name="eventsDates">
+    <div class="clearfix row">
+        <div class="col-sm-12 col-lg-8">
+            <div class="row">
+                <div class="col-sm-12 col-md-6 clearfix">
+                    <label for="start" class="col-xs-3">From</label>
+                    <input type="text" class="datepicker input-small session-change" id="start" value="{{start}}" />
+                </div>
+                <div class="col-sm-12 col-md-6 clearfix">
+                    <label for="end" class="col-xs-3">To</label>
+                    <input type="text" class="datepicker input-small session-change" id="end" value="{{end}}" />
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-lg-4">
+            <label for="interval" class="col-xs-6" id="intervalText">Or for the next</label>
+            <select id="interval" class="input-sm">
+                <option value="7 day">7 Days</option>
+                <option value="15 day">15 Days</option>
+                <option selected="selected" value="1 month">Month</option>
+            </select>
+        </div>
+    </div>
+</template>
+
+<template name="eventsTable">
+    <div class="table-responsive">
+        <table class="table table-striped" width="100%">
+            <colgroup>
+                <col />
+                <col />
+                <col />
+                <col width="120" />
+                <col width="120" />
+                <col width="150" />
+            </colgroup>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th class="hidden-xs">Type</th>
+                <th class="hidden-xs">Category</th>
+                <th>Date</th>
+                <th style="text-align: right">Amount</th>
+                <th style="text-align: right">Balance</th>
+                <th class="hidden-xs" style="text-align: center">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {{#each calendarEvents}}
+            {{> event}}
+            {{/each}}
+            </tbody>
+        </table>
+    </div>
+</template>
+
+<template name="event">
+    <tr class="{{#if negativeRunTotal}}error {{/if}}{{#if warnRunTotal}}warning {{/if}}{{#if lowRunTotal}}low{{/if}}">
+        <td>{{name}}</td>
+        <td class="hidden-xs">{{type}}</td>
+        <td class="hidden-xs">{{category}}</td>
+        <td title="{{date}}">{{due}}</td>
+        <td style="text-align: right">{{amount}}</td>
+        <td style="text-align: right">{{runTotal}}</td>
+        <td class="hidden-xs">
+            {{#if isOriginal}}
+            <center><i class="fa fa-trash-o delete" style="font-size:32px;"></i>
+            <i class="fa fa-pencil edit" style="font-size:32px;"></i></center>
+            {{else}}
+            <em class="muted">Recurring</em>
+            {{/if}}
+        </td>
+    </tr>
+</template>
+
+
+<template name="snapshot">
+    <span id="income">Savings: ${{totalIncome}}</span>
+    <span id="expenses">Debt: ${{totalExpenses}}</span>
+    <span id="difference">Total: ${{difference}}</span>
+</template>

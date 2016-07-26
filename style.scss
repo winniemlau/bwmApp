@@ -1,0 +1,331 @@
+@import 'sass/_normalize.scss';
+@import 'sass/_base.scss';
+
+html {
+    box-sizing: border-box;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+body {
+    color: $text;
+    font-family: 'Open Sans', sans-serif;
+}
+
+h1 {
+    font-weight: 100;
+    font-size: 4.5em;
+}
+
+h2 {
+
+    font-size: 3.157em;
+}
+
+h3 {
+    font-size: 1.5em;
+    font-weight: 100;
+}
+
+p {
+    font-size: 1em;
+}
+
+a {
+    color: $accent;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    padding: 10px 10px 7px;
+}
+
+.btn, button {
+    background: $orange;
+    text-transform: uppercase;
+    text-decoration: none;
+    display: inline-block;
+    font-weight: 800;
+    padding: 10px 51px 7px;
+    color: #FFF;
+    letter-spacing: 1px;
+    border: solid 2px $orange;
+    @include trans();
+    &:hover {
+        background: $lorange;
+        border-color: $lorange;
+    }
+}
+
+.btn-text {
+    @extend .btn;
+    background: transparent;
+}
+
+.btn-primary {
+    @extend .btn;
+    background: $accent;
+    border: solid 2px $accent;
+    &:hover {
+        background: $accent - 30;
+        border-color: $accent - 30;
+    }
+}
+
+
+.header {
+    background: $purple;
+
+    color: $green;
+    position: relative;
+    z-index: 10;
+    height: 60px;
+    padding: 5px 5%;
+    display: flex;
+    justify-content: space-between;
+    @include card(1);
+    a {
+        color: $green;
+    }
+    .site-title {
+        line-height: 0;
+        margin: 0;
+        font-size: 1.5em;
+    }
+}
+
+.main-nav {
+    ul {
+        list-style: none;
+        display: flex;
+        padding: 10px;
+    }
+    li + li {
+        margin-left: 20px;
+    }
+    a {
+        text-decoration: none;
+        border-bottom: 2px solid transparent;
+        margin-top: 5px;
+    }
+}
+
+.login-toggle {
+    cursor: pointer;
+}
+
+
+// Homepage
+.billboard {
+    background-color: $purple;
+    color: $green;
+    text-align: center;
+    padding: 40px 5%;
+    min-height: 100vh;
+}
+
+
+.app-layout {
+    margin-left: 80px;
+    min-height: 100vh;
+    padding: 40px 60px;
+    overflow: hidden;
+    background: $purple;
+    color: $green;
+}
+
+.app-nav {
+    z-index: 9;
+    position: fixed;
+    width: 80px;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    background: $purple;
+    overflow: hidden;
+    color: $green;
+    padding-top: 100px;
+    transition: all 0.3s ease;
+    border-right: solid 1px transparent;
+    &:hover {
+        width: 300px;
+        a > span {
+            opacity: 1;
+            transform: translate3d(0, 0,0);
+        }
+    }
+    a {
+        width: 100%;
+        padding: 10px 25px;
+        color: $green;
+        display: block;
+        white-space: nowrap;
+        font-size: 1em;
+        text-decoration: none;
+        border-bottom: 2px solid transparent;
+        transition: all 0.3s ease;
+        i {
+            font-size: 2em;
+            margin-right: 20px;
+        }
+        > span {
+            transform: translate3d(20px, 0,0);
+            opacity: 0;
+            transition: background 0.3s ease;
+        }
+        &:hover {
+            color: #FFF;
+            border-color: $green;
+            background: $nav - 20;
+            text-decoration: none;
+        }
+    }
+    ul {
+        padding: 0;
+        margin: 0;
+        list-style: none;
+    }
+}
+
+.page-title {
+    margin-top: 0;
+}
+
+table {
+    font-size: 1em;
+    color: #FFF;
+    width: 100%;
+    position: relative;
+    transition: all 0.4s cubic-bezier(0.68, -0.65, 0.265, 1.20);
+    @include card(2);
+    background: $purple;
+    tr:nth-child(even) {
+        background: #27203b;
+    }
+    td, th {
+        text-align: left;
+        padding: 10px 5px;
+    }
+    th {
+        text-transform: uppercase;
+        background: $lorange;
+        color: #FFF;
+    }
+    &.edit-mode {
+        transform: translate3d(300px, 0, 0);
+    }
+}
+
+.user_id {
+    color: $green;
+    cursor: pointer;
+}
+
+.user-edit {
+    position: absolute;
+    left: -300px;
+    top: 0;
+    background: #27203b;
+    z-index: 10;
+    padding: 20px;
+    width: 280px;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.68, -0.65, 0.265, 1.20);
+    @include card(2);
+    .close-edit-mode {
+        position: absolute;
+        top: 0;
+        right: 0;
+        padding: 20px;
+        font-size: 1.2em;
+        font-weight: 900;
+        text-transform: uppercase;
+        cursor: pointer;
+    }
+}
+
+.edit-mode .user-edit {
+    opacity: 1;
+}
+
+.datepicker {
+  z-index: 1151 !important;
+  background: $purple;
+  border: 2px solid #FFF;
+}
+
+.delete, .edit {
+    cursor: pointer;
+    margin: 10px;
+}
+
+#income, #expenses, #difference {
+  text-align: right;
+}
+
+#income {
+   font-size: 32px;
+   font-weight: bold;
+   color: $lorange;
+   display: block;
+ }
+
+#expenses {
+   font-size: 32px;
+   font-weight: bold;
+   color: $lorange;
+   display: block;
+   border-bottom: 1px solid #ccc;
+   padding-bottom: 5px;
+ }
+
+#difference {
+  font-size: 32px;
+  font-weight: bold;
+  display: block;
+}
+
+#balance{
+  text-align: right;
+}
+
+#interval{
+  background: $purple;
+}
+
+
+.row {
+  margin-top: 50px;
+}
+
+a:hover {
+text-decoration:none;
+}
+
+#addEventModal{
+  color: $text;
+}
+
+.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th {
+  background-color: #473f63;
+}
+
+#interval, #intervalText {
+  margin-top: 50px;
+}
+#date, #recurringUntil {
+  background: #FFF;
+  border: 1px solid $grey;
+}
+
+
+#at-btn{
+  background: $lorange;
+  border: 2px solid $lorange;
+  text-align: center;
+
+}
